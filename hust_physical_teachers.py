@@ -21,6 +21,7 @@ class hustPhysicsTeachers:
         self.name = []
         self.email = []
         self.phone = []
+        self.working_degree = []
         # self.content = []
 
     def getpage(self, num):
@@ -45,6 +46,7 @@ class hustPhysicsTeachers:
         pattern_teacher = re.compile('<strong>(.*?)</strong>.*?')
         pattern_contact = re.compile('[a-z0-9._%+-]+@[A-Z0-9.-]+\\.[a-z]+\\.[a-z]+\\.*', re.IGNORECASE)
         pattern_phone = re.compile('\d{3}-\d{8}|\d{4}-\d{7}')
+        pattern_working_degree = re.compile('[职 称]\w{3}|\w{4}', re.UNICODE)
         if not content:
             self.num += 1
             print ("page %d not found" % self.num)
@@ -54,6 +56,7 @@ class hustPhysicsTeachers:
             print teachers[0]
             contacts = re.findall(pattern_contact, content)
             phone = re.findall(pattern_phone, content)
+            working_degree = re.findall(pattern_working_degree, content)
             # 防止找不到联系而退出循环
             if not contacts:
                 print u"没有联系方式!\n"
@@ -68,6 +71,13 @@ class hustPhysicsTeachers:
             else:
                 print phone[0]
                 self.phone.append(phone[0])
+            if not working_degree:
+                print u"没有职称！\n"
+                self.working_degree.append("None")
+            else:
+                print working_degree[0]
+                self.working_degree.append(working_degree[0])
+
 
     def writeToExcel(self):
         """
@@ -82,6 +92,18 @@ class hustPhysicsTeachers:
         colB = ws1['B']
         colC = ws1['C']
         colD = ws1['D']
+        for i in range(len(self.name)):
+            index = 'B' + str(i+2)
+            ws1[index] = self.name[i]
+        print("写入名称成功")
+        for i in range(len(self.email)):
+            index = 'C' + str(i+2)
+            ws1[index] = self.email[i]
+        print("写入邮箱成功")
+        for i in range(len(self.phone)):
+            index = 'D' + str(i+2)
+            ws1[index] = self.phone[i]
+        print("写入电话成功")
         # ws1['A1'] = u"编号"
         # ws1['B1'] = u"导师"
         # ws1['C1'] = u"邮箱"
@@ -111,11 +133,12 @@ class hustPhysicsTeachers:
             self.getInformation()
 
         print("总共有 %d 个老师\n" % self.total)
-        print self.name
-        print "*" * 30
-        print self.email
-        print "*" * 30
-        print self.phone
+        self.writeToExcel()
+        # print self.name
+        # print "*" * 30
+        # print self.email
+        # print "*" * 30
+        # print self.phone
 
 hustPhysicsTeachers().test()
 
