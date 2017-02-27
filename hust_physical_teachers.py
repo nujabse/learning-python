@@ -3,6 +3,30 @@
 import urllib2
 import sys
 import re
+from openpyxl import Workbook
+from openpyxl import load_workbook
+from openpyxl.compat import range
+from openpyxl.utils import get_column_letter
+
+# 存储采集数据到excel
+wb = load_workbook(u"数据采集.xlsx")
+ws1 = wb[u"导师"]
+cell_range = ws1['A1': 'D180']
+# ws1.title = u"导师"
+colA = ws1['A']
+colB = ws1['B']
+colC = ws1['C']
+colD = ws1['D']
+ws1['A1'] = u"编号"
+ws1['B1'] = u"导师"
+ws1['C1'] = u"邮箱"
+ws1['D1'] = u"电话"
+for i in range(2, 200):
+    print i
+    index = 'A' + str(i)
+    ws1[index] = i-1
+    print ws1[index]
+wb.save(u"数据采集.xlsx")
 
 
 class hustPhysicsTeachers:
@@ -43,6 +67,7 @@ class hustPhysicsTeachers:
             teachers = re.findall(pattern_teacher, content)
             print teachers[0]
 
+
             contacts = re.findall(pattern_contact, content)
             phone = re.findall(pattern_phone, content)
             # 防止找不到联系而退出循环
@@ -75,6 +100,7 @@ class hustPhysicsTeachers:
         print("总共有 %d 个老师\n" % self.total)
 
 hustPhysicsTeachers().test()
+
 # except urllib2.URLError, e:
 #     if hasattr(e, "code"):
 #         print e.code
