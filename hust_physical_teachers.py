@@ -8,25 +8,7 @@ from openpyxl import load_workbook
 from openpyxl.compat import range
 from openpyxl.utils import get_column_letter
 
-# 存储采集数据到excel
-wb = load_workbook(u"数据采集.xlsx")
-ws1 = wb[u"导师"]
-cell_range = ws1['A1': 'D180']
-# ws1.title = u"导师"
-colA = ws1['A']
-colB = ws1['B']
-colC = ws1['C']
-colD = ws1['D']
-ws1['A1'] = u"编号"
-ws1['B1'] = u"导师"
-ws1['C1'] = u"邮箱"
-ws1['D1'] = u"电话"
-for i in range(2, 200):
-    print i
-    index = 'A' + str(i)
-    ws1[index] = i-1
-    print ws1[index]
-wb.save(u"数据采集.xlsx")
+
 
 
 class hustPhysicsTeachers:
@@ -36,6 +18,9 @@ class hustPhysicsTeachers:
         # print sys.stdin.encoding
         self.num = 900
         self.total = 0
+        self.name = []
+        self.email = []
+        self.phone = []
         # self.content = []
 
     def getpage(self, num):
@@ -65,20 +50,48 @@ class hustPhysicsTeachers:
             print ("page %d not found" % self.num)
         else:
             teachers = re.findall(pattern_teacher, content)
+            self.name.append(teachers[0])
             print teachers[0]
-
-
             contacts = re.findall(pattern_contact, content)
             phone = re.findall(pattern_phone, content)
             # 防止找不到联系而退出循环
             if not contacts:
                 print u"没有联系方式!\n"
+                self.email.append("None")
             else:
                 print contacts[0]
+                self.email.append(contacts[0])
+
             if not phone:
                 print u"没有电话号码!\n"
+                self.phone.append("None")
             else:
                 print phone[0]
+                self.phone.append(phone[0])
+
+    def writeToExcel(self):
+        """
+        存储采集数据到excel
+        :return:
+        """
+        wb = load_workbook(u"数据采集.xlsx")
+        ws1 = wb[u"导师"]
+        cell_range = ws1['A1': 'D180']
+        # ws1.title = u"导师"
+        colA = ws1['A']
+        colB = ws1['B']
+        colC = ws1['C']
+        colD = ws1['D']
+        # ws1['A1'] = u"编号"
+        # ws1['B1'] = u"导师"
+        # ws1['C1'] = u"邮箱"
+        # ws1['D1'] = u"电话"
+        # for i in range(2, 200):
+        #     print i
+        #     index = 'A' + str(i)
+        #     ws1[index] = i-1
+        #     print ws1[index]
+        wb.save(u"数据采集.xlsx")
 
     def statistics(self):
         """
@@ -98,8 +111,14 @@ class hustPhysicsTeachers:
             self.getInformation()
 
         print("总共有 %d 个老师\n" % self.total)
+        print self.name
+        print "*" * 30
+        print self.email
+        print "*" * 30
+        print self.phone
 
 hustPhysicsTeachers().test()
+
 
 # except urllib2.URLError, e:
 #     if hasattr(e, "code"):
