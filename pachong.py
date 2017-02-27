@@ -7,6 +7,7 @@ import thread
 import time
 
 
+
 # 糗事百科爬虫类
 class QSBK(object):
     """docstring for QSBK"""

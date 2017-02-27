@@ -3,10 +3,12 @@
 import urllib2
 import sys
 import re
+import regex
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.compat import range
 from openpyxl.utils import get_column_letter
+from bs4 import BeautifulSoup
 
 
 
@@ -46,7 +48,7 @@ class hustPhysicsTeachers:
         pattern_teacher = re.compile('<strong>(.*?)</strong>.*?')
         pattern_contact = re.compile('[a-z0-9._%+-]+@[A-Z0-9.-]+\\.[a-z]+\\.[a-z]+\\.*', re.IGNORECASE)
         pattern_phone = re.compile('\d{3}-\d{8}|\d{4}-\d{7}')
-        pattern_working_degree = re.compile('[职 称]\w{3}|\w{4}', re.UNICODE)
+        pattern_working_degree = regex.compile(u'[教授]', re.UNICODE)
         if not content:
             self.num += 1
             print ("page %d not found" % self.num)
@@ -56,7 +58,7 @@ class hustPhysicsTeachers:
             print teachers[0]
             contacts = re.findall(pattern_contact, content)
             phone = re.findall(pattern_phone, content)
-            working_degree = re.findall(pattern_working_degree, content)
+            working_degree = regex.findall(pattern_working_degree, content)
             # 防止找不到联系而退出循环
             if not contacts:
                 print u"没有联系方式!\n"
@@ -78,6 +80,12 @@ class hustPhysicsTeachers:
                 print working_degree[0]
                 self.working_degree.append(working_degree[0])
 
+    # def degreeAnalayze(self):
+    #     soup = BeautifulSoup(self.getpage(self.num))
+    #     # print(soup.get_text())
+    #     degree = soup.find_all(text=u"职称")
+    #     if degree:
+    #         print degree[0]
 
     def writeToExcel(self):
         """
@@ -129,6 +137,8 @@ class hustPhysicsTeachers:
             self.statistics()
             self.num += 1
             print "*"*30
+            # if self.getpage(self.num):
+            #     self.degreeAnalayze()
             print("checking page %d\n" % self.num)
             self.getInformation()
 
