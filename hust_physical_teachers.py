@@ -7,6 +7,8 @@ import regex
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.compat import range
+import requests
+from lxml import html
 from openpyxl.utils import get_column_letter
 from bs4 import BeautifulSoup
 
@@ -86,6 +88,16 @@ class hustPhysicsTeachers:
     #     degree = soup.find_all(text=u"职称")
     #     if degree:
     #         print degree[0]
+    def get_professors():
+        page = requests.get('http://phys.hust.edu.cn/xszdwjs/index.htm')
+        tree = html.fromstring(page.text)
+        for i in range(1, 50):
+            index = '//*[@id="lbrc_1"]/ul/li[' + str(i) + ']/span/a/text()'
+            intro_raw = tree.xpath(index)
+            print intro_raw
+            for i in intro_raw:
+                intro = i.encode('utf-8')
+            print intro
 
     def writeToExcel(self):
         """
