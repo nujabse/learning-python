@@ -25,7 +25,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
            }
 def getdata():
     """由于虾米部分音乐下架，可能部分音乐数据无法查证"""
-    for i in range(1, 10000):
+    for i in range(1000, 10000):
         try:
             url = 'http://www.xiami.com/count/getplaycount?id=' + str(i) + '&type=song&_xiamitoken=d1fb6eac5ee905225c46226aef039c7b'  # song ID
             song_url = 'http://www.xiami.com/song/' + str(i)
@@ -67,27 +67,28 @@ def getdata():
             if hasattr(e, "reason"):
                 print "reason", e.reason
 
-        time.sleep(random.randrange(0,4))  # 设置时间间隔为3秒
-        print("休息一下。。。。。")
+        if i % 99 == 0:
+            time.sleep(random.randrange(0,3))  # 设置时间间隔为99秒
+            print("休息一下。。。。。")
 
 def writeToExcel(rows, col, data):
     """
     存储采集数据到excel
     :return:
     """
-    wb = load_workbook(u"数据采集.xlsx")
+    wb = load_workbook("data.xlsx")
     ws1 = wb["xiami"]
-    # ws1['A1'] = u"编号"
-    # ws1['B1'] = "ids"
-    # ws1['C1'] = "title"
-    # ws1['D1'] = "counter"
-    # ws1['E1'] = "artist"
+    ws1['A1'] = u"编号"
+    ws1['B1'] = "ids"
+    ws1['C1'] = "title"
+    ws1['D1'] = "counter"
+    ws1['E1'] = "artist"
 
     # colA = ws1['A']
     # colB = ws1['B']
     # colC = ws1['C']
     # colD = ws1['D']
-    ws1.cell(row=rows, column=col, value=data)
+    ws1.cell(row=rows, column=col, value=int(data))
     # for i in range(len(ids)):
     #     index = 'B' + str(i + 2)
     #     ws1[index] = ids[i]
@@ -100,8 +101,8 @@ def writeToExcel(rows, col, data):
     #     index = 'D' + str(i + 2)
     #     ws1[index] = counter[i]
     print(u"写入counter.....")
-    wb.save(u"数据采集.xlsx")
-    print(u"采集数据完成！")
+    wb.save("data.xlsx")
+
 
     # for i in range(len(self.working_degree1)):
     #     index = 'G' + str(i + 2)
@@ -109,6 +110,7 @@ def writeToExcel(rows, col, data):
     # print(u"写入讲师成功")
 
 getdata()
+print(u"采集数据完成！")
 
 
 

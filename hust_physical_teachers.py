@@ -119,9 +119,9 @@ class hustPhysicsTeachers:
         存储采集数据到excel
         :return:
         """
-        wb = load_workbook(u"数据采集.xlsx")
-        ws1 = wb[u"导师"]
-        cell_range = ws1['A1': 'D180']
+        wb = load_workbook("data.xlsx")
+        ws1 = wb["whust"]
+        # cell_range = ws1['A1': 'D180']
         # ws1.title = u"导师"
         colA = ws1['A']
         colB = ws1['B']
@@ -146,11 +146,11 @@ class hustPhysicsTeachers:
 
 
 
-        # ws1['A1'] = u"编号"
-        # ws1['B1'] = u"导师"
-        # ws1['C1'] = u"邮箱"
-        # ws1['D1'] = u"电话"
-        # ws1['E1'] = u"职位"
+        ws1['A1'] = u"编号"
+        ws1['B1'] = u"导师"
+        ws1['C1'] = u"邮箱"
+        ws1['D1'] = u"电话"
+        ws1['E1'] = u"职位"
 
         # for i in range(2, 200):
         #     print i
@@ -168,15 +168,15 @@ class hustPhysicsTeachers:
             self.total += 1
 
     def test(self):
-        # while self.num < 1054:
-            # self.getpage(self.num)
-            # self.statistics()
-            # self.num += 1
-            # print "*"*30
-            # # if self.getpage(self.num):
-            # #     self.degreeAnalayze()
-            # print("checking page %d\n" % self.num)
-            # self.getInformation()
+        while self.num < 1054:
+            self.getpage(self.num)
+            self.statistics()
+            self.num += 1
+            print "*"*30
+            # if self.getpage(self.num):
+            #     self.degreeAnalayze()
+            print("checking page %d\n" % self.num)
+            self.getInformation()
 
         self.get_professors()
         # print("总共有 %d 个老师\n" % self.total)
@@ -189,12 +189,4 @@ class hustPhysicsTeachers:
 
 hustPhysicsTeachers().test()
 
-
-# except urllib2.URLError, e:
-#     if hasattr(e, "code"):
-#         print e.code
-#     if hasattr(e, "reason"):
-#         print u"错误原因", e.reason
-# print num
-# print content
 
