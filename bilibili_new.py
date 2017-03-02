@@ -62,7 +62,7 @@ class Bilicounter:
 
                     print("video id %d view count %s danmaku %s reply %s favorite %s coin %s share %s his_rank %s now_rank %s" % (num, view[0], danmaku[0], reply[0], favorite[0], coin[0], share[0], his_rank[0], now_rank[0]))
                 else:
-                    view = 0
+                    self.writeToExcel(num, 2, 0)
 
             except SocketError as e:
                 if e.errno != errno.ECONNRESET:
