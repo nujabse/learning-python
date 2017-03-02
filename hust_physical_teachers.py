@@ -119,7 +119,8 @@ class hustPhysicsTeachers:
         存储采集数据到excel
         :return:
         """
-        wb = load_workbook("data.xlsx")
+        wb = load_workbook("huster.xlsx")
+        # 文件名为中文会出现乱码问题
         ws1 = wb["whust"]
         # cell_range = ws1['A1': 'D180']
         # ws1.title = u"导师"
@@ -157,7 +158,7 @@ class hustPhysicsTeachers:
         #     index = 'A' + str(i)
         #     ws1[index] = i-1
         #     print ws1[index]
-        wb.save(u"数据采集.xlsx")
+        wb.save("huster.xlsx")
 
     def statistics(self):
         """

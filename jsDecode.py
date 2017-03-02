@@ -25,7 +25,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
            }
 def getdata():
     """由于虾米部分音乐下架，可能部分音乐数据无法查证"""
-    for i in range(1000, 10000):
+    for i in range(10000, 100000):
         try:
             url = 'http://www.xiami.com/count/getplaycount?id=' + str(i) + '&type=song&_xiamitoken=d1fb6eac5ee905225c46226aef039c7b'  # song ID
             song_url = 'http://www.xiami.com/song/' + str(i)

@@ -67,13 +67,16 @@ def getdata(lower_limit, upper_limit):
                 print e.code
             if hasattr(e, "reason"):
                 print "reason", e.reason
+        if num % 99 == 0:
+            time.sleep(random.randrange(0,10))  # 设置时间间隔为19秒
+            print("休息一下。。。。。")
 
 def writeToExcel(rows, col, data):
     """
     存储采集数据到excel
     :return:
     """
-    wb = load_workbook(u"数据采集.xlsx")
+    wb = load_workbook("huster.xlsx")
     ws1 = wb["bilibili"]
     # ws1['A1'] = "ID"
     # ws1['B1'] = "view"
@@ -99,7 +102,7 @@ def writeToExcel(rows, col, data):
     # for i in range(len(counter)):
     #     index = 'D' + str(i + 2)
     #     ws1[index] = counter[i]
-    wb.save(u"数据采集.xlsx")
+    wb.save("huster.xlsx")
 
 
     # for i in range(len(self.working_degree1)):
@@ -107,7 +110,7 @@ def writeToExcel(rows, col, data):
     #     ws1[index] = self.working_degree1[i]
     # print(u"写入讲师成功")
 
-int1 = int(raw_input("please input up limit: "))
+int1 = int(raw_input("please input lower limit: "))
 int2 = int(raw_input("please input upper limit: "))
 getdata(int1, int2)
 
