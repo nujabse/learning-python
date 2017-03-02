@@ -124,7 +124,7 @@ class Bilicounter:
 int1 = int(raw_input("please input lower limit: "))
 int2 = int(raw_input("please input upper limit: "))
 Bilicounter().getdata(int1, int2)
-
+print(u"采集数据完成！")
 
 
 
