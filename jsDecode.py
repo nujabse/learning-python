@@ -78,11 +78,11 @@ def writeToExcel(rows, col, data):
     """
     wb = load_workbook("data.xlsx")
     ws1 = wb["xiami"]
-    ws1['A1'] = u"编号"
-    ws1['B1'] = "ids"
-    ws1['C1'] = "title"
-    ws1['D1'] = "counter"
-    ws1['E1'] = "artist"
+    # ws1['A1'] = u"编号"
+    # ws1['B1'] = "ids"
+    # ws1['C1'] = "title"
+    # ws1['D1'] = "counter"
+    # ws1['E1'] = "artist"
 
     # colA = ws1['A']
     # colB = ws1['B']
