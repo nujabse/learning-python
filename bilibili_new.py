@@ -74,7 +74,7 @@ class Bilicounter:
                     print e.code
                 if hasattr(e, "reason"):
                     print "reason", e.reason
-            if num % 199 == 0:
+            if num % 199 == 0 or num == upper_limit - 1:
                 print("休息一下。。。。。")
                 self.workbook.save("huster.xlsx")   # 设置99秒保存一次
                 print("存入数据成功")

@@ -33,7 +33,7 @@ class xiamiCounter():
                 request = urllib2.Request(url, headers=self.headers)
                 response = urllib2.urlopen(request)
                 content = response.read().decode('utf-8')
-                pattern_count = re.compile('[:](\d{1,100000000})[,]')
+                pattern_count = re.compile('\"plays\":(.*?),')
                 count = re.findall(pattern_count, content)
                 #
                 # request_song = urllib2.Request(song_url, headers=headers)
@@ -67,7 +67,7 @@ class xiamiCounter():
                 if hasattr(e, "reason"):
                     print "reason", e.reason
 
-            if i % 299 == 0:
+            if i % 299 == 0 or i == upper_limit - 1:
                 print("休息一下。。。。。")
                 self.workbook.save("data.xlsx")
                 print("保存数据成功！")
