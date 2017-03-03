@@ -16,12 +16,12 @@ sys.setdefaultencoding('utf-8')
 
 class Bilicounter:
     def __init__(self):
-        self.headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
-                    'Referer':'http://www.bilibili.com/video/av8846918/',
-                    'Connection': 'keep-alive',
-
-                   'Cookie':'sid=lm09yj1b; fts=1460632018; time_tracker=20160616; buvid3=2AE5260B-E7C7-4D75-9BE1-62684F336E31956infoc; DedeUserID=29311993; DedeUserID__ckMd5=587efca938f0b74a; SESSDATA=cc6b3143%2C1490680144%2C933e5b5f; bili_jct=cbe1655d88fc1eda137eb6b02a3de006; _cnt_dyn=null; uTZ=-480; _cnt_pm=0; _cnt_notify=0; LIVE_LOGIN_DATA=eecd2fdfdf874d394b433f98c7bd822416c928ec; LIVE_LOGIN_DATA__ckMd5=d036889b161b1339; LIVE_BUVID=f947fa07510878c9abd57824c38fa3b6; LIVE_BUVID__ckMd5=9c951293b10e641c; user_face=http%3A%2F%2Fstatic.hdslb.com%2Fimages%2Fmember%2Fnoface.gif; rpdid=olmiqllmlqdopqqkkmkiw; purl_token=bilibili_1488337431; _dfcaptcha=854ce770b448867142655f4a639b9cae'
-                   }
+        self.headers = {"Host": "api.bilibili.com",
+                        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0',
+                        'Accept-Language': 'en-US,en;q=0.5',
+                        'Referer': 'http://www.bilibili.com/video/av8898537/',
+                        'Cookie': 'fts=1460870702; sid=bbmgsz04; rpdid=olmiqlmqqsdopmoswiiiw; buvid3=F78F18B2-38A8-4A81-A02B-9DB098A08A9724942infoc',
+                        'Connection': 'keep-alive'}
         self.workbook = load_workbook("huster.xlsx")
 
 
@@ -30,7 +30,7 @@ class Bilicounter:
             try:
                 url = 'http://api.bilibili.com/archive_stat/stat?aid=' + str(num)
                 request = urllib2.Request(url, headers=self.headers)
-                response = urllib2.urlopen(request)
+                response = urllib2.urlopen(request, timeout=6)
                 content = response.read().decode('utf-8')
                 pattern_view = re.compile("\"view\":(.*?),")
                 pattern_danmaku = re.compile("\"danmaku\":(.*?),")
@@ -74,11 +74,11 @@ class Bilicounter:
                     print e.code
                 if hasattr(e, "reason"):
                     print "reason", e.reason
-            if num % 199 == 0 or num == upper_limit - 1:
+            if num % 299 == 0 or num == upper_limit - 1:
                 print("休息一下。。。。。")
                 self.workbook.save("huster.xlsx")   # 设置99秒保存一次
                 print("存入数据成功")
-                time.sleep(random.randrange(0,50))  # 设置时间间隔为19秒
+                time.sleep(random.randrange(0, 15))  # 设置时间间隔为299秒
 
 
 

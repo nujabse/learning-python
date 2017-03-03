@@ -69,9 +69,9 @@ class xiamiCounter():
 
                 self.workbook.save("data.xlsx")
                 print("保存数据成功！")
-            if i % 7 == 2 or i % 9 == 1:
+            if i % 1011 == 1:
                 print("休息一下。。。。。")
-                time.sleep(1.1)  # 设置时间间隔为1.1秒
+                time.sleep(1.9)  # 设置时间间隔为1.1秒
 
 
     def writeToExcel(self, rows, col, data):
