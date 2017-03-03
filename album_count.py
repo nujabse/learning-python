@@ -20,9 +20,9 @@ class album():
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
             'Referer': 'http://m.xiami.com/',
-            'Connection': 'keep-alive',
+            'Connection': 'keep-alive'
 
-            'Cookie': 'unsign_token=4f23ab3b94ae95850c9c5da7aef287e2; bdshare_firstime=1460894873450; cna=aSmVD89xbyQCAcdTMxgCkCtM; gid=146233966652053; CNZZDATA921634=cnzz_eid%3D1056600907-1470359568-%26ntime%3D1472796701; CNZZDATA2629111=cnzz_eid%3D1838752247-1470359096-%26ntime%3D1472796766; _xiamitoken=d1fb6eac5ee905225c46226aef039c7b; login_method=emaillogin; member_auth=1zmQGYxLvj0xivSXS41me3AW5rCATDfXlokE27Aq5QFydYxYNYOrkKuTQApN3iSSq2FCRfnEhWQSRr0; user=22156413%22mathholic%22images%2Favatar_new%2F443%2F22156413_1394536403_1.jpg%222%2219655%22%3Ca+href%3D%27%2Fwebsitehelp%23help9_3%27+%3EDo%E2%80%A2%3C%2Fa%3E%22179%2267%2211887%2215e6c2b9dc%221488254727; _m_h5_tk=7c41b5eb2452b26db16b5b747b515b9c_1488283863638; _m_h5_tk_enc=15ff1a0b4a8465622b67a195472776fe; sec=58b57dd3547bf80f1f4a31a21817dcede3d13cc6; t_sign_auth=1; l=Ar29SsHoaUXW1EPeOTyxcTHnTRO3X/G5; isg=AoaGbUI5IiROGvZBVu5Xyu5Y13U5A8qhmkUoi3Cvd6mRcyaN2XcasWxDJRhF'
+            # 'Cookie': 'unsign_token=4f23ab3b94ae95850c9c5da7aef287e2; bdshare_firstime=1460894873450; cna=aSmVD89xbyQCAcdTMxgCkCtM; gid=146233966652053; CNZZDATA921634=cnzz_eid%3D1056600907-1470359568-%26ntime%3D1472796701; CNZZDATA2629111=cnzz_eid%3D1838752247-1470359096-%26ntime%3D1472796766; _xiamitoken=d1fb6eac5ee905225c46226aef039c7b; login_method=emaillogin; member_auth=1zmQGYxLvj0xivSXS41me3AW5rCATDfXlokE27Aq5QFydYxYNYOrkKuTQApN3iSSq2FCRfnEhWQSRr0; user=22156413%22mathholic%22images%2Favatar_new%2F443%2F22156413_1394536403_1.jpg%222%2219655%22%3Ca+href%3D%27%2Fwebsitehelp%23help9_3%27+%3EDo%E2%80%A2%3C%2Fa%3E%22179%2267%2211887%2215e6c2b9dc%221488254727; _m_h5_tk=7c41b5eb2452b26db16b5b747b515b9c_1488283863638; _m_h5_tk_enc=15ff1a0b4a8465622b67a195472776fe; sec=58b57dd3547bf80f1f4a31a21817dcede3d13cc6; t_sign_auth=1; l=Ar29SsHoaUXW1EPeOTyxcTHnTRO3X/G5; isg=AoaGbUI5IiROGvZBVu5Xyu5Y13U5A8qhmkUoi3Cvd6mRcyaN2XcasWxDJRhF'
             }
         self.workbook = load_workbook("album.xlsx")
 
@@ -30,7 +30,7 @@ class album():
         for num in range(lower_limit, upper_limit):
             try:
                 url = 'http://www.xiami.com/album/' + str(num)
-                page = requests.get(url, headers=self.headers)
+                page = requests.get(url, headers=self.headers, timeout=5)
                 tree = html.fromstring(page.text)
                 index1 = '//*[@id="sidebar"]/div[1]/ul/li[1]/text()'
                 index2 = '//*[@id="sidebar"]/div[1]/ul/li[3]/a/i/text()'
@@ -62,22 +62,33 @@ class album():
                     pass
                 print(u"采集数据中。。。。。。。。。。。")
 
+                if num % 199 == 0 or num == upper_limit - 1:
+                    self.workbook.save("album.xlsx")
+                    print("保存数据成功！")
+
             except SocketError as e:
                 if e.errno != errno.ECONNRESET:
                     raise  # Not error we are looking for
                 pass  # Handle error here.
 
-            except requests.HTTPError, e:
-                if hasattr(e, "code"):
-                    print e.code
-                if hasattr(e, "reason"):
-                    print "reason", e.reason
+            except requests.ConnectionError as e:
+                if e.errno == 104:
+                    num -= 1
+                    continue
+            except requests.ReadTimeout:
+                print "请求频繁， 小睡一下再重试。。。。。"
+                time.sleep(10)
+                num -= 1
+                continue
 
-            if num % 99 == 0 or num == upper_limit - 1:
+            if num % 77 == 1:
                 print("休息一下。。。。。")
-                self.workbook.save("album.xlsx")
-                print("保存数据成功！")
-                time.sleep(random.randrange(0,5))  # 设置时间间隔为299秒
+                time.sleep(random.randrange(0, 20))  # 设置时间间隔为299秒
+
+            # if hasattr(e, "reason"):
+            #     print "reason", e.reason
+
+
 
     def writeToExcel(self, rows, col, data):
         """
