@@ -45,16 +45,14 @@ class xiamiCounter():
                 # name = page.xpath(index_song)
 
                 # song = name
-                if count:
+                if count[0] != u'0':
                     # counter.append(count[0])
                     self.writeToExcel(i+1, 4, count[0])
+                    self.writeToExcel(i + 1, 2, i)
+                    print ("song number %d  play count %s" % (i, count[0]))
                 else:
-                    self.writeToExcel(i+1, 4, 0)
-
-                self.writeToExcel(i+1, 2, i)
-                # ids.append(id)
-                # title.append(name)
-                print ("song number %d  play count %s" % (i, count))
+                    print "Song ID %d does not exit, try next" % i
+                    continue
 
             except SocketError as e:
                 if e.errno != errno.ECONNRESET:
@@ -68,10 +66,12 @@ class xiamiCounter():
                     print "reason", e.reason
 
             if i % 299 == 0 or i == upper_limit - 1:
-                print("休息一下。。。。。")
+
                 self.workbook.save("data.xlsx")
                 print("保存数据成功！")
-                time.sleep(random.randrange(0,5))  # 设置时间间隔为299秒
+            if i % 7 == 2 or i % 9 == 1:
+                print("休息一下。。。。。")
+                time.sleep(1.1)  # 设置时间间隔为1.1秒
 
 
     def writeToExcel(self, rows, col, data):
