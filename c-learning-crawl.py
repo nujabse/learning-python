@@ -123,6 +123,8 @@ class CScraper(Crawler):
             for i in classes:
                 if soup.find_all(class_ = i):
                     body = soup.find_all(class_ = i)[0]
+                    print(i)
+                    break
                 else:
                     print("classed to be parsed not found!")
             # body = [soup.find_all(class_="preface")[0], soup.find_all(class_="toc")[0], soup.find_all(class_="sect1")[0]][0]
@@ -137,14 +139,14 @@ class CScraper(Crawler):
 
             html = str(body)
             # body中的img标签的src相对路径的改成绝对路径
-            # pattern = "(<img .*?src=\")(.*?)(\")"
+            pattern = "(<img .*?src=\")(.*?)(\")"
 
-            # def func(m):
-            #     if not m.group(3).startswith("http"):
-            #         rtn = "".join([m.group(1), self.domain, m.group(2), m.group(3)])
-            #         return rtn
-            #     else:
-            #         return "".join([m.group(1), m.group(2), m.group(3)])
+            def func(m):
+                if not m.group(3).startswith("http"):
+                    rtn = "".join([m.group(1), self.domain, m.group(2), m.group(3)])
+                    return rtn
+                else:
+                    return "".join([m.group(1), m.group(2), m.group(3)])
 
             # html = re.compile(pattern).sub(func, html)
             html = html_template.format(content=html)
