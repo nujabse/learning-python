@@ -18,7 +18,7 @@ from datetime import date
 class RssToEmail():
     def __init__(self):
         self.feed = feedparser.parse('http://rss.cnki.net/kns/rss.aspx?Journal=SHSW&Virtual=knavi')
-        self.text = '<html><body><h1>Hello messge sent via python!</h1><h2>'
+        self.text = '<html><body><h1 style="font-size:24px; color:#202121">生物物理学周报</h1>'
         self.limit = 10
         self.from_addr = "h.p.zhumeng@outlook.com"
         self.to_addr = "962302959@qq.com"
@@ -58,16 +58,17 @@ class RssToEmail():
         for key in self.feed["entries"][:self.limit]:
             # print('*'*50+ "\n")
             # print("标题：" + key["title"] + "\n")
-            self.text += '<p>' + "标题：" + key["title"] + '<br>'
+            # href = key['link']
+            self.text += '<h2><a href=' + key["link"] + '>'+ key['title'] + '</a>' + '</h2>'
             # print("更新日期：" + key["updated"] + "\n")
-            self.text += "更新日期：" + key["updated"] + '<br>'
+            self.text += '<p>' + '<strong>' + "更新日期：" + "</strong>"  + key["updated"] + '<br>'
             # print("作者：" + key["author"] + "\n")
             self.text += "作者：" + key["author"] + '<br>'
             regex = re.compile("作者：.*?<br/>摘要：")
             s = key["summary_detail"]['value']
             sub = ''
             result = re.sub(regex, sub, s, 0)
-            self.text += "摘要：" + result + '<br>' + '</p>'
+            self.text += '<div style="font-size:13px;line-height:22px;text-decoration:none;color:#333;display:block">'  + "摘要：" + result + '</div>' + '<br>' + '</p>'
         print(self.text)
         self.text += '</body></html>'
         return self.text
