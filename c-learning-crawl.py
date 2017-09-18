@@ -15,13 +15,14 @@ import pdfkit
 import requests
 from bs4 import BeautifulSoup
 
+# css = open('custom.css', 'r').read()
 html_template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 </head>
-<body>
+<body style ="font-family: helvetica,STheiti">
 {content}
 </body>
 </html>
@@ -78,6 +79,7 @@ class Crawler(object):
             'margin-bottom': '0.75in',
             'margin-left': '0.75in',
             'encoding': "UTF-8",
+            # 'user-style-sheet':"body {background: white none repeat scroll 0 0; font-family: Open Sans, STheiti;margin: 0.5in;}",
             'custom-header': [
                 ('Accept-Encoding', 'gzip')
             ],
