@@ -1,6 +1,6 @@
 # coding=utf-8
 from __future__ import unicode_literals
-
+from premailer import transform 
 import logging
 import os
 import re
@@ -137,16 +137,11 @@ class CScraper(Crawler):
             # center_tag.insert(1, title_tag)
             # body.insert(1, center_tag)
 
-            html = str(body)
+            html = transform(str(body), base_url =
+                             'http://akaedu.github.io/book/')
             # body中的img标签的src相对路径的改成绝对路径
-            pattern = "(<img .*?src=\")(.*?)(\")"
+            # pattern = "(<img .*?src=\")(.*?)(\")"
 
-            def func(m):
-                if not m.group(3).startswith("http"):
-                    rtn = "".join([m.group(1), self.domain, m.group(2), m.group(3)])
-                    return rtn
-                else:
-                    return "".join([m.group(1), m.group(2), m.group(3)])
 
             # html = re.compile(pattern).sub(func, html)
             html = html_template.format(content=html)
